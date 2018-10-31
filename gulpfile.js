@@ -1,5 +1,9 @@
 var gulp = require('gulp'),
-watch = require('gulp-watch')
+watch = require('gulp-watch'),
+postcss = require('gulp-postcss'),
+autoprefixer = require('autoprefixer'), //feature I want to use with postcss in the function of the gulp task 'styles'
+cssvars = require('postcss-simple-vars'),
+nested = require('postcss-nested')
 
 gulp.task('default', function(){
     console.log("Hurra! Has cread una nueva tarea de gulp!")
@@ -10,7 +14,14 @@ gulp.task('html', function(){
 })
 
 gulp.task('styles', function(){
-    console.log("Imagine Sass or Post CSS tasks running here")
+    // console.log("Imagine Sass or Post CSS tasks running here")
+    
+    // gulp will run this javascript function after having made changes in css
+    // we MUST include return here, because src is a asyncronous function
+    // and gulp is aware, when the function src is completed.
+    return gulp.src('./app/assets/styles/styles.css')
+                .pipe(postcss([cssvars, nested, autoprefixer])) //postcss expcets an array, that's why we include brackets []
+                .pipe(gulp.dest('./app/temp/styles'))
 })
 
 gulp.task('watch', function(){
